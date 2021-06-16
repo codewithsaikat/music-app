@@ -1,13 +1,13 @@
 <template>
  <div id="app">
     <header>
-        <h1>My Music</h1>
+        <h1>My Music</h1> 
     </header>
     <main>
         <section class="player">
             <h2 class="song-title">{{current.title}} - <span>{{current.artist}}</span>
             </h2>
-            <div class="control">
+            <div class="controls">
               <button class="prev" @click="prev">Prev</button>
               <button class="play" v-if="!isPlaying" @click="play">Play</button>
               <button class="pause" v-else @click="pause">Pause</button>
@@ -70,6 +70,15 @@ methods: {
     }
 
     this.player.play();
+    this.player.addEventListener('ended', function () {
+      this.index++;
+      if(this.index > this.songs.length - 1) {
+        this.index = 0;
+    }
+
+      this.current = this.songs[this.index];
+      this.play(this.current); 
+    }.bind(this));
     this.isPlaying = true;
   },
   pause () {
@@ -132,4 +141,95 @@ header {
 
 }
 
+main {
+ width: 100%;
+ max-width: 768px;
+ margin: 0 auto;
+ padding: 25px;
+
+} 
+.song-title {
+  color: #16263a;
+  font-size: 32px;
+  font-weight: 700;
+  text-transform: uppercase;
+  text-align: center;
+  
+}
+.song-title span {
+    font-weight: 400;
+    font-style: italic;
+    
+  }
+
+  .controls {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 30px 15px;
+  }
+
+  button {
+    appearance: none;
+    background: none;
+    border: none;
+    outline: none;
+    cursor: pointer;
+  }
+
+   button:hover {
+    opacity: 0.5;
+  }
+
+
+  .play, .pause {
+    font-size: 20px;
+    font-weight: 700;
+    padding: 15px 25px ;
+    margin: 0px 15px;
+    border-radius: 8px;
+    color: #FFF;
+    background-color: #02633a;
+
+  }
+
+  .next, .prev {
+    font-size: 20px;
+    font-weight: 700;
+    padding: 15px 25px ;
+    margin: 0px 15px;
+    border-radius: 8px;
+    color: #FFF;
+    background-color: #5e0805;
+  } 
+  .playlist {
+    padding: 0px 30px;
+  }
+
+  .playlist h3 {
+    color: #212121;
+    font-size: 28px ;
+    font-weight: 400 ;
+    margin-bottom: 30px ;
+    text-align: center;
+  }
+  .playlist .song {
+    display: block ;
+    width: 100% ;
+    padding: 15px;
+    font-size: 20px;
+    font-weight: 700;
+    cursor: pointer;
+
+  } 
+
+  .playlist .song:hover {
+    color: #FF5858;
+  }
+  .playlist .song.playing {
+    color: #FFF;
+    background-image: linear-gradient(to right, #CC2E5D, #FF5858);
+  }
+
+ 
 </style>
